@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board Game</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <section class="card-list">
+        <article class="card">
+            <header class="card-header">
+                <h3>Move</h3>
+                <p>Moves your character by 1 space.</p>
+
+                <div class="card-contents" onclick="player.moveUp()">
+                    <p>Move Up: <span id="upMovesLeft"></span></p>
+                </div>
+
+                <div class="card-contents" onclick="player.moveDown()">
+                    <p>Move Down: <span id="downMovesLeft"></span></p>
+                </div>
+
+                <div class="card-contents" onclick="player.moveLeft()">
+                    <p>Move Left: <span id="leftMovesLeft"></span></p>
+                </div>
+
+                <div class="card-contents" onclick="player.moveRight()">
+                    <p>Move Right: <span id="rightMovesLeft"></span></p>
+                </div>
+
+            </header>
+        </article>
+
+        <article class="card">
+            <header class="card-header">
+                <h3>Blink</h3>
+                <p>Teleports your character in a direction by 2 spaces. Allows you to pass obstacles.</p>
+                <div class="card-contents" onclick="player.blinkUp()">
+                    <p>Blink Up: <span id="upBlinksLeft"></span></p>
+                </div>
+
+                <div class="card-contents" onclick="player.blinkDown()">
+                    <p>Blink Down: <span id="downBlinksLeft"></span></p>
+                </div>
+
+                <div class="card-contents" onclick="player.blinkLeft()">
+                    <p>Blink Left: <span id="leftBlinksLeft"></span></p>
+                </div>
+
+                <div class="card-contents" onclick="player.blinkRight()">
+                    <p>Blink Right: <span id="rightBlinksLeft"></span></p>
+                </div>
+
+            </header>
+        </article>
+
+        <article class="card">
+            <header class="card-header">
+                <h3>Attack</h3>
+                <p>Attack an adjacent enemy</p>
+
+                <div class="card-contents" onclick="player.attack()">
+                    <p>Attack power: <span id="attack-power"></span></p>
+                </div>
+                
+            </header>
+        </article>
+
+    </section>
+
+    <script src="sketch.js"></script>
+</body>
+
+</html>
