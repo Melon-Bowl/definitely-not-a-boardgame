@@ -1,12 +1,16 @@
-// The only global variables that I define.
+// All of the global variables
+
+// Sliders for changing the colour of the player
 let sliderR;
 let sliderG;
 let sliderB;
 
+// Canvas stuff
 let cnv;
 let cnv_x;
 let cnv_y;
 
+// All of the obstacles
 let obstacle_list = [];
 let obstacle1;
 let obstacle2;
@@ -19,14 +23,16 @@ let obstacle8;
 let obstacle9;
 let obstacle10;
 
-
+// Enemies
 let enemy_list = [];
 let enemy1;
 
 let level_count;
 level_count = 0;
 
+// Gameboard object
 let gameboard = {
+    // This is the first object that I made so the method here is called update, but in future objects it is called show
     update: function() {
         // Grid
         for (var x = 0; x < width; x += width / 10) {
@@ -36,34 +42,40 @@ let gameboard = {
                 line(x, 0, x, height);
                 line(0, y, width, y);
             }
-    }}
+        }
+    }
 }
 
-
+// Player object, this is the biggest boi
 let player = {
-    // Method that lets the player move
     // Initial player co-ordinates
     x: 180,
     y: 340,
 
+    // Prevous player values that will be used for a future update introducing the undo button
     prev_x: 180,
     prev_y: 340,
 
+    // Width of the player rectangle
     player_width: 20,
+
+    // These values are used so that the program is more robust, I can just re-use these values whenever I want to change the position or atk stat of the player
     move_val: 40,
     blink_val: 80,
-
     attack_val: 5,
 
+    // Default RGB values
     red: 177,
     green: 39,
     blue: 219,
 
+    // Default values for moves left
     up_moves_left: 2,
     down_moves_left: 2,
     left_moves_left: 2,
     right_moves_left: 2,
 
+    // Default values for blinks left
     up_blinks_left: 2,
     down_blinks_left: 2,
     left_blinks_left: 2,
@@ -96,7 +108,10 @@ let player = {
         // Gets the span element from the document and displays the number of moves left after the function is called
         document.getElementById('rightMovesLeft').innerHTML = this.right_moves_left;
 
+        // Checks if the player has moves of this kind left
         if (this.right_moves_left > 0) {
+
+            // Checks the positions of all the enemies against the position of the player
             for (let i = 0; i < enemy_list.length; i++) {
                 if (this.x == enemy_list[i].x - 40 && this.y == enemy_list[i].y) {
                     alert("You cannot move there, an enemy stands in your way!");
@@ -104,6 +119,7 @@ let player = {
                 }
             }
 
+            // Same check but for all the obstacles
             for (let i = 0; i < obstacle_list.length; i++) {
                 if (this.x == obstacle_list[i].x - 40 && this.y == obstacle_list[i].y) {
                     alert("You cannot move there, an obstacle is blocking your way!");
@@ -111,6 +127,7 @@ let player = {
                 }
             }
             
+            // Moves the player and updates the number of moves left
             this.prev_x = this.x;
             this.x = this.x + this.move_val;
             this.right_moves_left = this.right_moves_left - 1;
@@ -210,6 +227,8 @@ let player = {
     // In terms of talking to the HTML, it works in the same way as the normal movement logic
     blinkRight: function() {
         document.getElementById('rightBlinksLeft').innerHTML = this.right_blinks_left;
+
+        // Doesn't run checks for objects or enemies because the player is supposed to be able to blink on and past them
         if (this.right_blinks_left > 0) {
             this.x = this.x + this.blink_val;
             this.right_blinks_left = this.right_blinks_left - 1;
@@ -266,7 +285,53 @@ let player = {
     }
 }
 
-// Obstacle uses a contructor function so that I can spawn as many as I like
+// Not that interesting, works the same way as the other objects
+let success_tile = {
+    x: 220,
+    y: 20,
+
+    success_tile_width: 15,
+
+    sucess_text_width: 160,
+    success_text_height: 45,
+
+    button_width: 80,
+    button_height: 40,
+
+    // Mouse check is false by default
+    mouseCheck: false,
+
+    show: function() {
+        fill(39, 219, 87);
+        rect(this.x - (this.success_tile_width / 2), this.y - (this.success_tile_width / 2), this.success_tile_width)
+    },
+
+    // Method that displays the success screen which is just an overlayed rectangle with reduced opacity and some text
+    success_screen: function() {
+        fill(10, 90);
+        rect(0, 0, 400, 400);
+
+        fill(47, 224, 65);
+        textSize(28);
+        text('Level Clear!', (400 - this.sucess_text_width) / 2, (400 - this.success_text_height) / 2, this.sucess_text_width, this.success_text_height);
+    },
+
+    // Not really a button, but does its job fine
+    continue_button: function() {
+        fill(47, 224, 65);
+        textSize(20);
+        text('click anywhere to continue', (400 - this.sucess_text_width) / 2, (400 - this.success_text_height) / 2 + 40, this.sucess_text_width, this.success_text_height);
+        this.mouseCheck = true;
+    },
+
+    increment: function() {
+        level_count++;
+        console.log(level_count);
+    }
+}
+
+// Obstacle is a class that has a constructor function
+// This allows me to spawn as many as I like and talk to each one individually if I want
 class Obstacle {
     constructor(x, y) {
         this.x = x;
@@ -281,6 +346,7 @@ class Obstacle {
             rect(this.x - (this.obstacle_width / 2), this.y - (this.obstacle_width / 2), this.obstacle_width);
     }
 
+    // Makes the obstacle commit existn't
     destroy () {
         this.x = null;
         this.y = null;
@@ -288,6 +354,7 @@ class Obstacle {
     }
 }
 
+// Same as object, its a class with a constructor function so I can spawn as many as I like
 class Enemy {
     constructor (health, x, y) {
         this.health = health;
@@ -307,6 +374,7 @@ class Enemy {
             textSize(12);   
             text("HP: " + this.health, this.x - 15, this.y - 10);
 
+            // Checks if the enemy is dead, if it is, then it nullifies all of the properties so it existn't
             if (this.health <= 0) {
                 this.isAlive = false;
                 this.x = null;
@@ -320,47 +388,6 @@ class Enemy {
         this.x = null;
         this.y = null;
         this.enemy_width = null;
-    }
-}
-
-
-let success_tile = {
-    x: 220,
-    y: 20,
-
-    success_tile_width: 15,
-
-    sucess_text_width: 160,
-    success_text_height: 45,
-
-    button_width: 80,
-    button_height: 40,
-
-    mouseCheck: false,
-
-    show: function() {
-        fill(39, 219, 87);
-        rect(this.x - (this.success_tile_width / 2), this.y - (this.success_tile_width / 2), this.success_tile_width)
-    },
-
-    success_screen: function() {
-        fill(10, 90);
-        rect(0, 0, 400, 400);
-        fill(47, 224, 65);
-        textSize(28);
-        text('Level Clear!', (400 - this.sucess_text_width) / 2, (400 - this.success_text_height) / 2, this.sucess_text_width, this.success_text_height);
-    },
-
-    continue_button: function() {
-        fill(47, 224, 65);
-        textSize(20);
-        text('click anywhere to continue', (400 - this.sucess_text_width) / 2, (400 - this.success_text_height) / 2 + 40, this.sucess_text_width, this.success_text_height);
-        this.mouseCheck = true;
-    },
-
-    increment: function() {
-        level_count++;
-        console.log(level_count);
     }
 }
 
@@ -504,12 +531,13 @@ nullify = () => {
     }
 }
 
-
+// Checks which level should be run based on the level_count
 level_check = () => {
     if (level_count == 0) {
         level1();
         console.log("level1");
     } else if (level_count == 2) {
+        // Nullify function is used to wipe the old objects that they are not drawn on top of the level2 objects
         nullify();
         level2();
         console.log("level2");
@@ -520,29 +548,9 @@ level_check = () => {
     }
 }
 
-function centerCanvas() {
-    cnv_x = (windowWidth - width) / 2;
-    cnv_y = 340;
-    cnv.position(cnv_x, cnv_y);
-  }
-
-function setup() {
-    cnv = createCanvas(400, 400);
-    centerCanvas();
-    sliderR = createSlider(0, 255, 177);
-    sliderG = createSlider(0, 255, 39);
-    sliderB = createSlider(0, 255, 219);
-
-    sliderR.position(cnv_x, cnv_y + 410);
-    sliderG.position(cnv_x, cnv_y + 430);
-    sliderB.position(cnv_x, cnv_y + 450);
-}
-
-function windowResized() {
-    centerCanvas();
-}
-
+// p5.js listener which detects a mouse click
 function mouseClicked() {
+    // Only does something if the player is on the success_tile
     if (player.x == success_tile.x && player.y == success_tile.y) {
         success_tile.increment();
     }
@@ -553,24 +561,59 @@ if (success_tile.mouseCheck) {
     console.log(level_count);
 }
 
+// Just centers the canvas
+centerCanvas = () => {
+    cnv_x = (windowWidth - width) / 2;
+    cnv_y = 340;
+    cnv.position(cnv_x, cnv_y);
+  }
+
+// When the window is resized, the canvas location is adjusted so that its centered
+function windowResized() {
+    centerCanvas();
+}
+
+// Only runs once, compared to the draw() function which runs continuosly
+function setup() {
+    cnv = createCanvas(400, 400);
+    centerCanvas();
+
+    sliderR = createSlider(0, 255, 177);
+    sliderG = createSlider(0, 255, 39);
+    sliderB = createSlider(0, 255, 219);
+
+    sliderR.position(cnv_x, cnv_y + 410);
+    sliderG.position(cnv_x, cnv_y + 430);
+    sliderB.position(cnv_x, cnv_y + 450);
+}
+
+// Function is run before the draw() function so that the first level can be loaded by default
 level_check();
 
+// Runs continuously
 function draw() {
-    background(220);   
+    background(220);
+    
+    // Makes the gameboard first so that everything else is on top
     gameboard.update();
     
+    // Displays the success tile
     success_tile.show();
 
+    // Shows the player
     player.show();
 
+    // Runs through the list of obstacles and displays all of them
     for (let i = 0; i < obstacle_list.length; i++) {
         obstacle_list[i].show();
     }
 
+    // Runs through the list of enemies and displays all of them
     for (let i = 0; i < enemy_list.length; i++) {
         enemy_list[i].show();
     }  
 
+    // Checks if the player has reached the success tile and then displays the success screen, button and runs the level check
     if (player.x == success_tile.x && player.y == success_tile.y) {
         success_tile.success_screen();
         success_tile.continue_button();
@@ -588,6 +631,7 @@ function draw() {
         player.x = 380;
     }
 
+    // Updates the values of the RGB variables according to the values of the sliders
     player.red = sliderR.value();
     player.green = sliderG.value();
     player.blue = sliderB.value();
