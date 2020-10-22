@@ -10,25 +10,15 @@ let cnv;
 let cnv_x;
 let cnv_y;
 
-// All of the obstacles
+// Obstacle list
 let obstacle_list = [];
-let obstacle1;
-let obstacle2;
-let obstacle3;
-let obstacle4;
-let obstacle5;
-let obstacle6;
-let obstacle7;
-let obstacle8;
-let obstacle9;
-let obstacle10;
 
-// Enemies
+// Enemy List
 let enemy_list = [];
-let enemy1;
 
+// Level number tracker
 let level_count;
-level_count = 6;
+level_count = 0;
 
 // Gameboard object
 let gameboard = {
@@ -273,14 +263,18 @@ let player = {
     },
 
     attack: function() {
-        if (this.x == enemy1.x + 40 || this.x == enemy1.x - 40 || this.x == enemy1.x) {
-            if (this.y == enemy1.y + 40 || this.y == enemy1.y - 40 || this.y == enemy1.y) {
-                enemy1.health = enemy1.health - this.attack_val;
-            } else {
-                alert("No adjacent enemies, what are you even trying to attack?");
+        let enemyFound = false;
+        for (let i = 0; i < enemy_list.length; i++) {
+            if (this.x == enemy_list[i].x + 40 || this.x == enemy_list[i].x - 40 || this.x == enemy_list[i].x) {
+                if (this.y == enemy_list[i].y + 40 || this.y == enemy_list[i].y - 40 || this.y == enemy_list[i].y) {
+                    enemy_list[i].health = enemy_list[i].health - this.attack_val;
+                    enemyFound = true;
+                }
             }
-        } else {
-            alert("No adjacent enemies, what are you even trying to attack?");
+        }
+
+        if (enemyFound == false) {
+            alert("No adjacent enemies found, what are you even trying to attack?");
         }
     }
 }
@@ -410,15 +404,7 @@ level1 = () => {
     player.left_moves_left = 0;
     player.right_moves_left = 0;
 
-    // Set the position of the obstacles
-    obstacle1 = new Obstacle(180, 220);
-    obstacle_list.push(obstacle1);
-
-    obstacle2 = new Obstacle(220, 220);
-    obstacle_list.push(obstacle2);
-
-    obstacle3 = new Obstacle(140, 220);
-    obstacle_list.push(obstacle3);
+    obstacle_list.push(new Obstacle(180, 220), new Obstacle(220, 220), new Obstacle(140, 220));
 }
 
 level2 = () => {
@@ -439,29 +425,8 @@ level2 = () => {
     player.left_moves_left = 5;
     player.right_moves_left = 5;
 
-    obstacle1 = new Obstacle(260, 100);
-    obstacle_list.push(obstacle1);
-
-    obstacle2 = new Obstacle(340, 100);
-    obstacle_list.push(obstacle2);
-
-    obstacle3 = new Obstacle(260, 60);
-    obstacle_list.push(obstacle3);
-
-    obstacle4 = new Obstacle(340, 60);
-    obstacle_list.push(obstacle4);
-
-    obstacle5 = new Obstacle(300, 60);
-    obstacle_list.push(obstacle5);
-
-    obstacle6 = new Obstacle(260, 140);
-    obstacle_list.push(obstacle6);
-
-    obstacle7 = new Obstacle(340, 140);
-    obstacle_list.push(obstacle7);
-
-    enemy1 = new Enemy(5, 300, 140);
-    enemy_list.push(enemy1);
+    obstacle_list.push(new Obstacle(260, 100), new Obstacle(340, 100), new Obstacle(260, 60), new Obstacle(340, 60), new Obstacle(300, 60), new Obstacle(260, 140), new Obstacle(340, 140));
+    enemy_list.push(new Enemy(5, 300, 140));
 
 }
 
@@ -483,40 +448,17 @@ level3 = () => {
     player.left_moves_left = 0;
     player.right_moves_left = 0;
 
-    // To the right
-    obstacle1 = new Obstacle(success_tile.x - 40, success_tile.y);
-    obstacle_list.push(obstacle1);
+    obstacle_list.push(
+        new Obstacle(success_tile.x - 40, success_tile.y),
+        new Obstacle(success_tile.x + 40, success_tile.y),
+        new Obstacle(success_tile.x - 40, success_tile.y - 40),
+        new Obstacle(success_tile.x, success_tile.y - 40),
+        new Obstacle(success_tile.x + 40, success_tile.y - 40),
+        new Obstacle(success_tile.x + 40, success_tile.y + 40),
+        new Obstacle(success_tile.x, success_tile.y + 40),
+        new Obstacle(success_tile.x - 40, success_tile.y + 40));
 
-    // To the left
-    obstacle2 = new Obstacle(success_tile.x + 40, success_tile.y);
-    obstacle_list.push(obstacle2);
-
-    // Top left
-    obstacle3 = new Obstacle(success_tile.x - 40, success_tile.y - 40);
-    obstacle_list.push(obstacle3);
-
-    // Top middle
-    obstacle4 = new Obstacle(success_tile.x, success_tile.y - 40);
-    obstacle_list.push(obstacle4);
-
-    // Top right
-    obstacle5 = new Obstacle(success_tile.x + 40, success_tile.y - 40);
-    obstacle_list.push(obstacle5);
-
-    // Bottom right
-    obstacle6 = new Obstacle(success_tile.x + 40, success_tile.y + 40);
-    obstacle_list.push(obstacle6);
-
-    // Bottom middle
-    obstacle7 = new Obstacle(success_tile.x, success_tile.y + 40);
-    obstacle_list.push(obstacle7);
-
-    // Bottom left
-    obstacle8 = new Obstacle(success_tile.x - 40, success_tile.y + 40);
-    obstacle_list.push(obstacle8);
-
-    enemy1 = new Enemy(10, 180, 300);
-    enemy_list.push(enemy1);
+        enemy_list.push(new Enemy(10, 180, 300));
 }
 
 level4 = () => {
@@ -527,18 +469,42 @@ level4 = () => {
     player.x = 380;
     player.y = 380;
 
-    player.up_blinks_left = 5;
-    player.right_blinks_left = 5;
-    player.left_blinks_left = 5;
-    player.down_blinks_left = 5;
+    player.up_blinks_left = 4;
+    player.right_blinks_left = 0;
+    player.left_blinks_left = 4;
+    player.down_blinks_left = 0;
 
-    player.up_moves_left = 5;
-    player.down_moves_left = 5;
-    player.left_moves_left = 5;
-    player.right_moves_left = 5;
+    player.up_moves_left = 1;
+    player.down_moves_left = 1;
+    player.left_moves_left = 1;
+    player.right_moves_left = 1;
 
-    obstacle_list.push(new Obstacle(success_tile.x + 40, success_tile.y + 40), new Obstacle(success_tile.x + 40, success_tile.y), new Obstacle(success_tile.x, success_tile.y + 40));
-    enemy_list.push(new Enemy(340, 340));
+    obstacle_list.push(new Obstacle(success_tile.x + 40, success_tile.y + 40), new Obstacle(success_tile.x + 40, success_tile.y), new Obstacle(success_tile.x, success_tile.y + 40),
+    new Obstacle(300, 340), new Obstacle(340, 300), new Obstacle(380, 300), new Obstacle(300, 380), new Obstacle(300, 300));
+    enemy_list.push(new Enemy(5, 340, 340), new Enemy(5, 340, 380), new Enemy(5, 380, 340));
+}
+
+level5 = () => {
+    // Code for level5
+    success_tile.x = 20;
+    success_tile.y = 20;
+
+    player.x = 380;
+    player.y = 380;
+
+    player.up_blinks_left = 4;
+    player.right_blinks_left = 0;
+    player.left_blinks_left = 4;
+    player.down_blinks_left = 0;
+
+    player.up_moves_left = 1;
+    player.down_moves_left = 1;
+    player.left_moves_left = 1;
+    player.right_moves_left = 1;
+
+    obstacle_list.push(new Obstacle(success_tile.x + 40, success_tile.y + 40), new Obstacle(success_tile.x + 40, success_tile.y), new Obstacle(success_tile.x, success_tile.y + 40),
+    new Obstacle(300, 340), new Obstacle(340, 300), new Obstacle(380, 300), new Obstacle(300, 380), new Obstacle(300, 300));
+    enemy_list.push(new Enemy(5, 340, 340), new Enemy(5, 340, 380), new Enemy(5, 380, 340));
 }
 
 // Nullify function removes all of the properties of all the objects so that they can be replaced in the next level
@@ -569,7 +535,10 @@ level_check = () => {
         console.log("level3")
     } else if (level_count == 6) {
         nullify();
-        level4()
+        level4();
+    } else if (level_count == 8) {
+        nullify();
+        level5();
     }
 }
 
