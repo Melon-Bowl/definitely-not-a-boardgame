@@ -28,7 +28,7 @@ let enemy_list = [];
 let enemy1;
 
 let level_count;
-level_count = 0;
+level_count = 6;
 
 // Gameboard object
 let gameboard = {
@@ -519,6 +519,28 @@ level3 = () => {
     enemy_list.push(enemy1);
 }
 
+level4 = () => {
+    // Code for level4
+    success_tile.x = 20;
+    success_tile.y = 20;
+
+    player.x = 380;
+    player.y = 380;
+
+    player.up_blinks_left = 5;
+    player.right_blinks_left = 5;
+    player.left_blinks_left = 5;
+    player.down_blinks_left = 5;
+
+    player.up_moves_left = 5;
+    player.down_moves_left = 5;
+    player.left_moves_left = 5;
+    player.right_moves_left = 5;
+
+    obstacle_list.push(new Obstacle(success_tile.x + 40, success_tile.y + 40), new Obstacle(success_tile.x + 40, success_tile.y), new Obstacle(success_tile.x, success_tile.y + 40));
+    enemy_list.push(new Enemy(340, 340));
+}
+
 // Nullify function removes all of the properties of all the objects so that they can be replaced in the next level
 // This avoids all the levels being displayed at the same time.
 nullify = () => {
@@ -545,6 +567,9 @@ level_check = () => {
         nullify();
         level3();
         console.log("level3")
+    } else if (level_count == 6) {
+        nullify();
+        level4()
     }
 }
 

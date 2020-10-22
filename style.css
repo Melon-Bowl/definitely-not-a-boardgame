@@ -3,6 +3,7 @@ body {
     margin: 0;
     background-color: #17141d;
     color: white;
+    font-family: 'Josefin Sans', sans-serif;
 }
 
 .card-list {
@@ -51,6 +52,7 @@ body {
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
+    cursor: pointer;
 }
 
 .card:focus-within~.card, .card:hover~.card {
