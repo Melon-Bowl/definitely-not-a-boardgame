@@ -560,6 +560,7 @@ nullify = () => {
 // Checks which level should be run based on the level_count
 level_check = () => {
     if (level_count == 0) {
+        saveGame();
         level1();
         console.log("level1");
     } else if (level_count == 2) {
