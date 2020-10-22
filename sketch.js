@@ -1,5 +1,7 @@
 // All of the global variables
 
+let save;
+
 // Sliders for changing the colour of the player
 let sliderR;
 let sliderG;
@@ -17,8 +19,9 @@ let obstacle_list = [];
 let enemy_list = [];
 
 // Level number tracker
-let level_count;
-level_count = 0;
+let level_count = 0;
+
+let level_num = 0;
 
 // Gameboard object
 let gameboard = {
@@ -486,26 +489,61 @@ level4 = () => {
 
 level5 = () => {
     // Code for level5
-    success_tile.x = 20;
-    success_tile.y = 20;
+    success_tile.x = 140;
+    success_tile.y = 260;
 
-    player.x = 380;
+    player.x = 220;
     player.y = 380;
 
-    player.up_blinks_left = 4;
+    player.up_blinks_left = 1;
     player.right_blinks_left = 0;
-    player.left_blinks_left = 4;
+    player.left_blinks_left = 0;
     player.down_blinks_left = 0;
 
     player.up_moves_left = 1;
-    player.down_moves_left = 1;
+    player.down_moves_left = 0;
     player.left_moves_left = 1;
-    player.right_moves_left = 1;
+    player.right_moves_left = 2;
 
-    obstacle_list.push(new Obstacle(success_tile.x + 40, success_tile.y + 40), new Obstacle(success_tile.x + 40, success_tile.y), new Obstacle(success_tile.x, success_tile.y + 40),
-    new Obstacle(300, 340), new Obstacle(340, 300), new Obstacle(380, 300), new Obstacle(300, 380), new Obstacle(300, 300));
-    enemy_list.push(new Enemy(5, 340, 340), new Enemy(5, 340, 380), new Enemy(5, 380, 340));
+    // Makes a line of obstacles above the player
+    for (let i = 20; i < 400; i+=40) {
+        obstacle_list.push(new Obstacle(i, 340));
+    }
+
+    enemy_list.push(new Enemy(1, 180, 300), 
+    new Enemy(1, 180, 260), 
+    new Enemy(1, 180, 220), 
+    new Enemy(1, 220, 220), 
+    new Enemy(1, 260, 220), 
+    new Enemy(1, 260, 260),
+    new Enemy(1, 260, 300),
+    new Enemy(1, 220, 300));
+    
 }
+
+// Saves your progress
+function saveGame() {
+    save = {
+        level_count: level_count
+    }
+    window.localStorage.setItem('save', JSON.stringify(save));
+    console.log("Game Saved!")
+}
+
+function load() {
+    let mySave = JSON.parse(window.localStorage.getItem('save'));
+    if (typeof mySave.level_count !== 'undefined') {
+        level_count = mySave.level_count;
+    }
+}
+
+deleteSave = () => {
+    save.level_count = 0;
+    window.localStorage.setItem('save', JSON.stringify(save));
+    console.log('Save data deleted :O');
+}
+
+load();
 
 // Nullify function removes all of the properties of all the objects so that they can be replaced in the next level
 // This avoids all the levels being displayed at the same time.
@@ -539,6 +577,7 @@ level_check = () => {
     } else if (level_count == 8) {
         nullify();
         level5();
+        saveGame();
     }
 }
 
@@ -556,7 +595,7 @@ if (success_tile.mouseCheck) {
 }
 
 // Just centers the canvas
-centerCanvas = () => {
+function centerCanvas() {
     cnv_x = (windowWidth - width) / 2;
     cnv_y = 340;
     cnv.position(cnv_x, cnv_y);
