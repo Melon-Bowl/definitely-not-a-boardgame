@@ -1,5 +1,4 @@
 // All of the global variables
-
 let save;
 let latest_save;
 
@@ -19,10 +18,16 @@ let obstacle_list = [];
 // Enemy List
 let enemy_list = [];
 
+// Pickup lists
+let blink_list = [];
+let move_list = [];
+
 // Level number tracker
 let level_count = 0;
-
 let level_num = 0;
+
+let track1;
+let track2;
 
 // Gameboard object
 let gameboard = {
@@ -120,7 +125,7 @@ let player = {
                     this.x = this.x - 40;
                 }
             }
-            
+
             // Moves the player and updates the number of moves left
             this.prev_x = this.x;
             this.x = this.x + this.move_val;
@@ -149,7 +154,7 @@ let player = {
                     this.x = this.x + 40;
                 }
             }
-            
+
             this.prev_x = this.x;
             this.x = this.x - this.move_val;
             this.left_moves_left = this.left_moves_left - 1;
@@ -389,6 +394,78 @@ class Enemy {
     }
 }
 
+class BlinkPickup {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+
+        this.width = 15;
+        
+        this.isPresent = true;
+    }
+
+    show () {
+        if (this.isPresent == true) {
+            fill(227, 171, 16);
+            rect(this.x - (this.width / 2), this.y - (this.width / 2), this.width);
+            textSize(11);   
+            text("+blinks", this.x - 18, this.y - 10);
+        }
+    }
+
+    check() {
+        if (player.x == this.x && player.y == this.y) {
+            alert("You have picked up extra blinks!");
+            player.up_blinks_left ++;
+            player.down_blinks_left ++;
+            player.left_blinks_left ++;
+            player.right_blinks_left ++;
+        }
+    }
+
+    destroy() {
+        this.x = null;
+        this.y = null;
+        this.width = null;
+    }
+}
+
+class MovePickup {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+
+        this.width = 15;
+        
+        this.isPresent = true;
+    }
+
+    show () {
+        if (this.isPresent == true) {
+            fill(44, 68, 222);
+            rect(this.x - (this.width / 2), this.y - (this.width / 2), this.width);
+            textSize(11);   
+            text("+moves", this.x - 20, this.y - 10);
+        }
+    }
+
+    check() {
+        if (player.x == this.x && player.y == this.y) {
+            alert("You have picked up extra moves!");
+            player.up_moves_left ++;
+            player.down_moves_left ++;
+            player.left_moves_left ++;
+            player.right_moves_left ++;
+        }
+    }
+
+    destroy() {
+        this.x = null;
+        this.y = null;
+        this.width = null;
+    }
+}
+
 // Here I use arrow notation for functions that I have created (functions that are not part of p5.js)
 // This allows for me, and anyone else reading the code to easily distinguish p5.js functions from my own
 level1 = () => {
@@ -548,7 +625,133 @@ level6 = () => {
     enemy_list.push(
         new Enemy(10, 20, 340)
     );
+}
+
+level7 = () => {
+    // Code for level7
+    success_tile.x = 340;
+    success_tile.y = 60;
+
+    player.x = 60;
+    player.y = 340;
+    player.attack_val = 20;
+
+    player.up_blinks_left = 0;
+    player.right_blinks_left = 3;
+    player.left_blinks_left = 1;
+    player.down_blinks_left = 1;
+
+    player.up_moves_left = 8;
+    player.down_moves_left = 1;
+    player.left_moves_left = 1;
+    player.right_moves_left = 2;
+
+    enemy_list.push(
+        new Enemy(100, player.x, player.y + 40),
+        new Enemy(40, player.x, player.y - 40)
+    );
+
+    obstacle_list.push(
+        new Obstacle(player.x + 40, player.y),
+        new Obstacle(player.x - 40, player.y),
+        new Obstacle(340, 340)
+    );
+}
+
+level8 = () => {
+    // Code for level8
+    success_tile.x = 340;
+    success_tile.y = 340;
+    success_tile.success_tile_width = 20;
+
+
+    player.x = 60;
+    player.y = 340;
+
+
+    player.up_blinks_left = 1;
+    player.right_blinks_left = 3;
+    player.left_blinks_left = 1;
+    player.down_blinks_left = 1;
+
+    player.up_moves_left = 1;
+    player.down_moves_left = 0;
+    player.left_moves_left = 1;
+    player.right_moves_left = 1;
+
+    obstacle_list.push(
+        new Obstacle(player.x + 40, player.y),
+        new Obstacle(player.x, player.y + 40),
+        new Obstacle(player.x - 40, player.y),
+        new Obstacle(player.x + 80, player.y + 40),
+        new Obstacle(player.x + 120, player.y),
+        new Obstacle(player.x + 160, player.y + 40),
+        new Obstacle(player.x + 200, player.y),
+        new Obstacle(player.x + 240, player.y + 40),
+        new Obstacle(player.x + 280, player.y),
+        new Obstacle(player.x + 320, player.y + 40)
+    );
+}
+
+level9 = () => {
+    // Code for level9
+    success_tile.x = 100;
+    success_tile.y = 60;
+
+    success_tile.success_tile_width = 10;
+
+    player.x = 220;
+    player.y = 300;
+
+    player.up_blinks_left = 2;
+    player.right_blinks_left = 1;
+    player.left_blinks_left = 1;
+    player.down_blinks_left = 1;
+
+    player.up_moves_left = 3;
+    player.down_moves_left = 3;
+    player.left_moves_left = 3;
+    player.right_moves_left = 3;
+
+    for (let i = 20; i < 400; i += 40) {
+        enemy_list.push(new Enemy(10, i, 60));
+    }
+
+    for (let i = 20; i < 400; i += 40) {
+        enemy_list.push(new Enemy(10, i, 180));
+    }
+}
+
+// From now on: every ten levels, a 'big' new mechanic is introduced. Now that the introductory levels are done, we can start playing around with new stuff!
+// Every five levels, a new 'mini' mechanic is introduced which compliments the 'big' new mechanic which prevents it from getting boring and keeps the players on their toes.
+// New mechanic: "Pick up" extra moves and blinks
+level10 = () => {
+    // Code for level10
+    success_tile.x = 180;
+    success_tile.y = 20;
     
+    player.up_blinks_left = 0;
+    player.right_blinks_left = 0;
+    player.left_blinks_left = 0;
+    player.down_blinks_left = 0;
+
+    player.up_moves_left = 3;
+    player.down_moves_left = 0;
+    player.left_moves_left = 0;
+    player.right_moves_left = 0;
+
+    obstacle_list.push(
+        new Obstacle(180, 220), 
+        new Obstacle(220, 220), 
+        new Obstacle(140, 220)
+    );
+
+    blink_list.push(
+        new BlinkPickup(180, 260),
+        new BlinkPickup(180, 100)
+    );
+
+    move_list.push(new MovePickup(180, 180));
 }
 
 // Saves your progress
@@ -562,7 +765,7 @@ function saveGame() {
     console.log("Game Saved!")
 }
 
-function load() {
+function loadSave() {
     let mySave = JSON.parse(window.localStorage.getItem('save'));
     if (typeof mySave.level_count !== 'undefined') {
         level_count = mySave.level_count;
@@ -601,13 +804,13 @@ level_check = () => {
         level3();
         level_num = 3;
         document.getElementById("save-num").innerHTML = level_num;
-        console.log("level3")
+        console.log("level3");
     } else if (level_count == 6) {
         nullify();
         level4();
         level_num = 4;
         document.getElementById("save-num").innerHTML = level_num;
-        console.log("level4")
+        console.log("level4");
     } else if (level_count == 8) {
         nullify();
         level5();
@@ -616,12 +819,59 @@ level_check = () => {
         latest_save = 5;
         document.getElementById("save-num").innerHTML = level_num;
         document.getElementById("latest-save").innerHTML = latest_save;
-        console.log("level5")
+        console.log("level5");
     } else if (level_count == 10) {
         nullify();
         level6();
         level_num = 6;
+        console.log("level6");
+    } else if (level_count == 12) {
+        nullify();
+        level7();
+        level_num = 7;
+        console.log("level7");
+    } else if (level_count == 14) {
+        nullify();
+        level8();
+        level_num = 8;
+        console.log("level8");
+    } else if (level_count == 16) {
+        nullify();
+        level9();
+        level_num = 9;
+        console.log("level9");
+    } else if (level_count == 18) {
+        nullify();
+        level10();
+        saveGame();
+        level_num = 10;
+        latest_save = 10;
+        document.getElementById("save-num").innerHTML = level_num;
+        document.getElementById("latest-save").innerHTML = latest_save;
+        console.log("level10");      
     }
+}
+
+// Only runs once, compared to the draw() function which runs continuosly
+function setup() {
+    cnv = createCanvas(400, 400);
+    centerCanvas();
+
+    sliderR = createSlider(0, 255, 177);
+    sliderG = createSlider(0, 255, 39);
+    sliderB = createSlider(0, 255, 219);
+
+    sliderR.position(cnv_x, cnv_y + 410);
+    sliderG.position(cnv_x, cnv_y + 430);
+    sliderB.position(cnv_x, cnv_y + 450);
+
+    track1 = loadSound('music/mewmore_VirbankCity.mp3', loaded);
+    track1.setVolume(0.3);
+}
+
+function loaded() {
+    track1.play();
+    track1.setLoop(true);
 }
 
 // p5.js listener which detects a mouse click
@@ -647,20 +897,6 @@ function centerCanvas() {
 // When the window is resized, the canvas location is adjusted so that its centered
 function windowResized() {
     centerCanvas();
-}
-
-// Only runs once, compared to the draw() function which runs continuosly
-function setup() {
-    cnv = createCanvas(400, 400);
-    centerCanvas();
-
-    sliderR = createSlider(0, 255, 177);
-    sliderG = createSlider(0, 255, 39);
-    sliderB = createSlider(0, 255, 219);
-
-    sliderR.position(cnv_x, cnv_y + 410);
-    sliderG.position(cnv_x, cnv_y + 430);
-    sliderB.position(cnv_x, cnv_y + 450);
 }
 
 
@@ -689,7 +925,25 @@ function draw() {
     // Runs through the list of enemies and displays all of them
     for (let i = 0; i < enemy_list.length; i++) {
         enemy_list[i].show();
+    }
+    
+    // Displays all the blink pickups
+    for (let i = 0; i < blink_list.length; i++) {
+        blink_list[i].show();
+        if (player.x == blink_list[i].x && player.y == blink_list[i].y) {
+            blink_list[i].check();
+            blink_list[i].destroy();
+        }
     }  
+
+    // Displays all the move pickups
+    for (let i = 0; i < move_list.length; i++) {
+        move_list[i].show();
+        if (player.x == move_list[i].x && player.y == move_list[i].y) {
+            move_list[i].check();
+            move_list[i].destroy();
+        }
+    }
 
     // Checks if the player has reached the success tile and then displays the success screen, button and runs the level check
     if (player.x == success_tile.x && player.y == success_tile.y) {

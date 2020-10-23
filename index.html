@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Board Game</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/addons/p5.sound.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     
@@ -75,12 +76,16 @@
 
         <article class="card">
             <header class="card-header">
-                <h3>Load Saves</h3>
+                <h3>Load Saves/Music</h3>
                 <p>Your progress is saved automatically every five levels. Here you can load your most recent save.</p>
 
-                <div class="card-contents" onclick="load()">
+                <div class="card-contents" onclick="loadSave()">
                     <p>Current Level: <span id="save-num"></span></p>
                     <p>Load most recent save: <span id="latest-save"></span></p>
+                </div>
+
+                <div class="card-contents" onclick="loaded()">
+                    <p>If you are having trouble hearing the music, please click here.</p>
                 </div>
                 
             </header>
@@ -90,7 +95,9 @@
 
     <div class="footer">
         <p> Definitely not a boardgame. Created by: <a href="https://github.com/Melon-Bowl">Melon-Bowl</a></br>
-        CSS and HTML code for the cards was taken from: <a href="https://github.com/fireship-io/stacked-card-list">fireship-io github page</a></p>
+        CSS and HTML code for the cards was taken from: <a href="https://github.com/fireship-io/stacked-card-list">fireship-io github page</a> </br>
+        Music by: <a href="https://www.youtube.com/user/Mewmore">Mewmore</a>
+    </p>
     </div>
 
     <script src="sketch.js"></script>
