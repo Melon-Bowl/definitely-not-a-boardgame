@@ -522,6 +522,35 @@ level5 = () => {
     
 }
 
+level6 = () => {
+    // Code for level6
+    success_tile.x = 100;
+    success_tile.y = 380;
+
+    player.x = 60;
+    player.y = 340;
+
+    player.up_blinks_left = 0;
+    player.right_blinks_left = 1;
+    player.left_blinks_left = 0;
+    player.down_blinks_left = 1;
+
+    player.up_moves_left = 0;
+    player.down_moves_left = 0;
+    player.left_moves_left = 1;
+    player.right_moves_left = 0;
+
+    obstacle_list.push(
+        new Obstacle(success_tile.x - 40, success_tile.y),
+        new Obstacle(success_tile.x, success_tile.y - 40)
+    );
+
+    enemy_list.push(
+        new Enemy(10, 20, 340)
+    );
+    
+}
+
 // Saves your progress
 function saveGame() {
     save = {
@@ -588,6 +617,10 @@ level_check = () => {
         document.getElementById("save-num").innerHTML = level_num;
         document.getElementById("latest-save").innerHTML = latest_save;
         console.log("level5")
+    } else if (level_count == 10) {
+        nullify();
+        level6();
+        level_num = 6;
     }
 }
 
