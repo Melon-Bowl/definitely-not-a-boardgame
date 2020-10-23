@@ -1,6 +1,7 @@
 // All of the global variables
 
 let save;
+let latest_save;
 
 // Sliders for changing the colour of the player
 let sliderR;
@@ -524,7 +525,9 @@ level5 = () => {
 // Saves your progress
 function saveGame() {
     save = {
-        level_count: level_count
+        level_count: level_count,
+        level_num: level_num,
+        latest_save: latest_save
     }
     window.localStorage.setItem('save', JSON.stringify(save));
     console.log("Game Saved!")
@@ -535,15 +538,8 @@ function load() {
     if (typeof mySave.level_count !== 'undefined') {
         level_count = mySave.level_count;
     }
+    level_check();
 }
-
-deleteSave = () => {
-    save.level_count = 0;
-    window.localStorage.setItem('save', JSON.stringify(save));
-    console.log('Save data deleted :O');
-}
-
-load();
 
 // Nullify function removes all of the properties of all the objects so that they can be replaced in the next level
 // This avoids all the levels being displayed at the same time.
@@ -560,25 +556,38 @@ nullify = () => {
 // Checks which level should be run based on the level_count
 level_check = () => {
     if (level_count == 0) {
-        saveGame();
         level1();
+        level_num = 1;
+        document.getElementById("save-num").innerHTML = level_num;
         console.log("level1");
     } else if (level_count == 2) {
         // Nullify function is used to wipe the old objects that they are not drawn on top of the level2 objects
         nullify();
         level2();
+        level_num = 2;
+        document.getElementById("save-num").innerHTML = level_num;
         console.log("level2");
     } else if (level_count == 4) {
         nullify();
         level3();
+        level_num = 3;
+        document.getElementById("save-num").innerHTML = level_num;
         console.log("level3")
     } else if (level_count == 6) {
         nullify();
         level4();
+        level_num = 4;
+        document.getElementById("save-num").innerHTML = level_num;
+        console.log("level4")
     } else if (level_count == 8) {
         nullify();
         level5();
         saveGame();
+        level_num = 5;
+        latest_save = 5;
+        document.getElementById("save-num").innerHTML = level_num;
+        document.getElementById("latest-save").innerHTML = latest_save;
+        console.log("level5")
     }
 }
 
@@ -620,6 +629,8 @@ function setup() {
     sliderG.position(cnv_x, cnv_y + 430);
     sliderB.position(cnv_x, cnv_y + 450);
 }
+
+
 
 // Function is run before the draw() function so that the first level can be loaded by default
 level_check();

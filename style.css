@@ -103,11 +103,3 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
 }
-
-.delete-save:hover {
-    background: linear-gradient(90deg,#ff1b1b,#ff0000);
-    text-shadow: none;
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
-}
