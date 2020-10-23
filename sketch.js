@@ -729,6 +729,11 @@ level10 = () => {
     // Code for level10
     success_tile.x = 180;
     success_tile.y = 20;
+
+    success_tile.success_tile_width = 15;
+
+    player.x = 180;
+    player.y = 340;
     
     player.up_blinks_left = 0;
     player.right_blinks_left = 0;
