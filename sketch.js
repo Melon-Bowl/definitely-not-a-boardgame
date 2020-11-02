@@ -473,6 +473,8 @@ level1 = () => {
     // Set the location of the success tile
     success_tile.x = 180;
     success_tile.y = 20;
+
+    success_tile.success_tile_width = 15;
     
     // Set the number of moves left that the player can use
     player.up_blinks_left = 3;
@@ -492,6 +494,8 @@ level2 = () => {
     // Code for level 2
     success_tile.x = 300;
     success_tile.y = 100;
+
+    success_tile.success_tile_width = 15;
 
     player.x = 180;
     player.y = 340;
@@ -515,6 +519,8 @@ level3 = () => {
     // Code for level 3
     success_tile.x = 180;
     success_tile.y = 220;
+
+    success_tile.success_tile_width = 15;
 
     player.x = 180;
     player.y = 340;
@@ -547,6 +553,8 @@ level4 = () => {
     success_tile.x = 20;
     success_tile.y = 20;
 
+    success_tile.success_tile_width = 15;
+
     player.x = 380;
     player.y = 380;
 
@@ -569,6 +577,8 @@ level5 = () => {
     // Code for level5
     success_tile.x = 140;
     success_tile.y = 260;
+
+    success_tile.success_tile_width = 15;
 
     player.x = 220;
     player.y = 380;
@@ -604,6 +614,8 @@ level6 = () => {
     success_tile.x = 100;
     success_tile.y = 380;
 
+    success_tile.success_tile_width = 15;
+
     player.x = 60;
     player.y = 340;
 
@@ -631,6 +643,8 @@ level7 = () => {
     // Code for level7
     success_tile.x = 340;
     success_tile.y = 60;
+
+    success_tile.success_tile_width = 15;
 
     player.x = 60;
     player.y = 340;
@@ -829,21 +843,25 @@ level_check = () => {
         nullify();
         level6();
         level_num = 6;
+        document.getElementById("save-num").innerHTML = level_num;
         console.log("level6");
     } else if (level_count == 12) {
         nullify();
         level7();
         level_num = 7;
+        document.getElementById("save-num").innerHTML = level_num;
         console.log("level7");
     } else if (level_count == 14) {
         nullify();
         level8();
         level_num = 8;
+        document.getElementById("save-num").innerHTML = level_num;
         console.log("level8");
     } else if (level_count == 16) {
         nullify();
         level9();
         level_num = 9;
+        document.getElementById("save-num").innerHTML = level_num;
         console.log("level9");
     } else if (level_count == 18) {
         nullify();
