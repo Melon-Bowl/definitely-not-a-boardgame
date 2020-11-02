@@ -87,13 +87,15 @@ body {
 }
 
 .footer {
-    position: fixed;
-    left: 0;
+    position: relative;
     bottom: 0;
     width: 100%;
     background-color: #100d14;
     color: #7a7a8c;
     text-align: center;
+    clear: both;
+    margin-top: 450px;
+    padding: 8px;
 }
 
 .footer a:hover {

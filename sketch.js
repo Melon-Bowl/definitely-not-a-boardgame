@@ -866,9 +866,9 @@ function setup() {
     sliderG = createSlider(0, 255, 39);
     sliderB = createSlider(0, 255, 219);
 
-    sliderR.position(cnv_x, cnv_y + 410);
-    sliderG.position(cnv_x, cnv_y + 430);
-    sliderB.position(cnv_x, cnv_y + 450);
+    sliderR.position(cnv_x + 420, cnv_y);
+    sliderG.position(cnv_x + 420, cnv_y + 20);
+    sliderB.position(cnv_x + 420, cnv_y + 40);
 
     track1 = loadSound('music/mewmore_VirbankCity.mp3', loaded);
     track1.setVolume(0.3);
